@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import OutsideClick from 'react-outside-click-handler'
+
+import { ModalContext } from '../hooks'
 
 const FormDiv = styled.div`
   position: relative;
@@ -57,7 +59,8 @@ const FormDiv = styled.div`
   }
 `
 
-const SignupForm = ({ handleClose }) => {
+const SignupForm = () => {
+  const { handleClose } = useContext(ModalContext)
   return (
     <OutsideClick onOutsideClick={handleClose}>
       <FormDiv>

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
+import { ModalContext } from './hooks'
 import SignupForm from './components/SignupForm'
 import SigninForm from './components/SigninForm'
 import Backdrop from './components/Backdrop'
@@ -11,20 +12,21 @@ const Div = styled.div`
   width: 60%;
 `
 
-const Modal = ({ state, handleClose }) => {
-  const { signupOpen, signinOpen } = state
+const Modal = () => {
+  const { signupOpen, signinOpen } = useContext(ModalContext)
+  console.log('Modal rendered')
   return (
     <>
       {(signupOpen || signinOpen) && <Backdrop />}
 
       {signupOpen && (
         <Div>
-          <SignupForm handleClose={handleClose} />
+          <SignupForm />
         </Div>
       )}
       {signinOpen && (
         <Div>
-          <SigninForm handleClose={handleClose} />
+          <SigninForm />
         </Div>
       )}
     </>

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 
+import { ModalProvider, ModalContext } from './hooks'
 import Nav from './Nav'
 import Modal from './Modal'
 
@@ -17,33 +18,23 @@ const InnerDiv = styled.div`
   text-align: center;
 `
 
-class App extends React.Component {
-  state = {
-    signupOpen: false,
-    signinOpen: false
-  }
-
-  handleSignup = () => this.setState({ signupOpen: true })
-
-  handleSignin = () => this.setState({ signinOpen: true })
-
-  handleClose = () => this.setState({ signupOpen: false, signinOpen: false })
-
-  render() {
-    return (
-      <Div>
-        <Nav
-          handleSignup={this.handleSignup}
-          handleSignin={this.handleSignin}
-        />
-        <InnerDiv>
-          <h1>Welcome to React Mall</h1>
-          {(this.state.signupOpen || this.state.signinOpen) && (
-            <Modal state={this.state} handleClose={this.handleClose} />
-          )}
-        </InnerDiv>
-      </Div>
-    )
-  }
+const MyApp = () => {
+  const { signupOpen, signinOpen } = useContext(ModalContext)
+  return (
+    <Div>
+      <Nav />
+      <InnerDiv>
+        <h1>Welcome to React Mall</h1>
+        {(signupOpen || signinOpen) && <Modal />}
+      </InnerDiv>
+    </Div>
+  )
 }
+
+const App = () => (
+  <ModalProvider>
+    <MyApp />
+  </ModalProvider>
+)
+
 export default App

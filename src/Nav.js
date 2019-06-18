@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
+
+import { ModalContext } from './hooks'
 
 const Div = styled.div`
   width: 100%;
@@ -31,7 +33,8 @@ const Div = styled.div`
   }
 `
 
-const Nav = ({ handleSignup, handleSignin }) => {
+const Nav = () => {
+  const { handleSignup, handleSignin } = useContext(ModalContext)
   return (
     <Div>
       <div className='bar'>
