@@ -1,28 +1,45 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useReducer } from 'react'
 
 export const ModalContext = createContext()
 
-export const ModalProvider = ({ children }) => {
-  const [signupOpen, setSignupOpen] = useState(false)
-  const [signinOpen, setSigninOpen] = useState(false)
-
-  const handleSignup = () => setSignupOpen(true)
-
-  const handleSignin = () => setSigninOpen(true)
-
-  const handleClose = () => {
-    setSignupOpen(false)
-    setSigninOpen(false)
+const modalReducer = (state, action) => {
+  switch (action.type) {
+    case 'signup':
+      return {
+        ...state,
+        signupOpen: true,
+        signinOpen: false
+      }
+    case 'signin':
+      return {
+        ...state,
+        signupOpen: false,
+        signinOpen: true
+      }
+    case 'close':
+      return {
+        ...state,
+        signupOpen: false,
+        signinOpen: false
+      }
+    default:
+      return state
   }
+}
+
+const initialState = {
+  signupOpen: false,
+  signinOpen: false
+}
+
+export const ModalProvider = ({ children }) => {
+  const [modalState, modalDispatch] = useReducer(modalReducer, initialState)
 
   return (
     <ModalContext.Provider
       value={{
-        signinOpen,
-        signupOpen,
-        handleSignup,
-        handleSignin,
-        handleClose
+        modalState,
+        modalDispatch
       }}
     >
       {children}

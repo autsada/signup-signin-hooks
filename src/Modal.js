@@ -13,8 +13,9 @@ const Div = styled.div`
 `
 
 const Modal = () => {
-  const { signupOpen, signinOpen } = useContext(ModalContext)
-  console.log('Modal rendered')
+  const { modalState } = useContext(ModalContext)
+  const { signupOpen, signinOpen } = modalState
+
   return (
     <>
       {(signupOpen || signinOpen) && <Backdrop />}

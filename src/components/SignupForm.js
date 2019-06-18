@@ -60,9 +60,9 @@ const FormDiv = styled.div`
 `
 
 const SignupForm = () => {
-  const { handleClose } = useContext(ModalContext)
+  const { modalDispatch } = useContext(ModalContext)
   return (
-    <OutsideClick onOutsideClick={handleClose}>
+    <OutsideClick onOutsideClick={() => modalDispatch({ type: 'close' })}>
       <FormDiv>
         <h1>Sign Up</h1>
         <FormDiv>
@@ -90,7 +90,7 @@ const SignupForm = () => {
             />
             <button className='bttn'>Submit</button>
           </form>
-          <h3 onClick={handleClose}>&times;</h3>
+          <h3 onClick={() => modalDispatch({ type: 'close' })}>&times;</h3>
         </FormDiv>
       </FormDiv>
     </OutsideClick>

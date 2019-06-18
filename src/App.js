@@ -19,7 +19,8 @@ const InnerDiv = styled.div`
 `
 
 const MyApp = () => {
-  const { signupOpen, signinOpen } = useContext(ModalContext)
+  const { modalState } = useContext(ModalContext)
+  const { signupOpen, signinOpen } = modalState
   return (
     <Div>
       <Nav />

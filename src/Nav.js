@@ -34,12 +34,16 @@ const Div = styled.div`
 `
 
 const Nav = () => {
-  const { handleSignup, handleSignin } = useContext(ModalContext)
+  const { modalDispatch } = useContext(ModalContext)
   return (
     <Div>
       <div className='bar'>
-        <button onClick={handleSignup}>Sign Up</button>
-        <button onClick={handleSignin}>Sign In</button>
+        <button onClick={() => modalDispatch({ type: 'signup' })}>
+          Sign Up
+        </button>
+        <button onClick={() => modalDispatch({ type: 'signin' })}>
+          Sign In
+        </button>
       </div>
     </Div>
   )
