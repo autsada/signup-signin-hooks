@@ -13,14 +13,20 @@ const Div = styled.div`
 
 const Modal = ({ state, handleClose }) => {
   const { signupOpen, signinOpen } = state
-  console.log('Modal rendered')
   return (
     <>
       {(signupOpen || signinOpen) && <Backdrop />}
-      <Div>
-        {signupOpen && <SignupForm handleClose={handleClose} />}
-        {signinOpen && <SigninForm handleClose={handleClose} />}
-      </Div>
+
+      {signupOpen && (
+        <Div>
+          <SignupForm handleClose={handleClose} />
+        </Div>
+      )}
+      {signinOpen && (
+        <Div>
+          <SigninForm handleClose={handleClose} />
+        </Div>
+      )}
     </>
   )
 }

@@ -38,7 +38,9 @@ class App extends React.Component {
         />
         <InnerDiv>
           <h1>Welcome to React Mall</h1>
-          <Modal state={this.state} handleClose={this.handleClose} />
+          {(this.state.signupOpen || this.state.signinOpen) && (
+            <Modal state={this.state} handleClose={this.handleClose} />
+          )}
         </InnerDiv>
       </Div>
     )
