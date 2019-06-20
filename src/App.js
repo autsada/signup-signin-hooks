@@ -1,41 +1,25 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import { ModalProvider, ModalContext } from './hooks'
-import Nav from './Nav'
-import Modal from './Modal'
+import { ModalProvider } from './hooks'
+import Routes from './Routes'
 
 const Div = styled.div`
   margin: 0;
   padding: 0;
   color: grey;
   background: white;
+  font-family: sans-serif;
 `
 
-const InnerDiv = styled.div`
-  margin: 0 auto;
-  width: 80%;
-  text-align: center;
-`
-
-const MyApp = () => {
-  const { modalState } = useContext(ModalContext)
-  const { signupOpen, signinOpen } = modalState
+const App = () => {
   return (
-    <Div>
-      <Nav />
-      <InnerDiv>
-        <h1>Welcome to React Mall</h1>
-        {(signupOpen || signinOpen) && <Modal />}
-      </InnerDiv>
-    </Div>
+    <ModalProvider>
+      <Div>
+        <Routes />
+      </Div>
+    </ModalProvider>
   )
 }
-
-const App = () => (
-  <ModalProvider>
-    <MyApp />
-  </ModalProvider>
-)
 
 export default App

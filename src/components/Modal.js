@@ -1,14 +1,14 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 
-import { ModalContext } from './hooks'
-import SignupForm from './components/SignupForm'
-import SigninForm from './components/SigninForm'
-import Backdrop from './components/Backdrop'
+import { ModalContext } from '../hooks'
+import SignupForm from './SignupForm'
+import SigninForm from './SigninForm'
+import Backdrop from './Backdrop'
 
 const Div = styled.div`
   margin: 0 auto;
-  margin-top: -4rem;
+  margin-top: -6rem;
   width: 60%;
 `
 
@@ -16,9 +16,11 @@ const Modal = () => {
   const { modalState } = useContext(ModalContext)
   const { signupOpen, signinOpen } = modalState
 
+  if (!signupOpen && !signinOpen) return null
+
   return (
     <>
-      {(signupOpen || signinOpen) && <Backdrop />}
+      <Backdrop />
 
       {signupOpen && (
         <Div>
