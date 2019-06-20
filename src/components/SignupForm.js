@@ -61,6 +61,7 @@ const FormDiv = styled.div`
 
 const SignupForm = () => {
   const { modalDispatch } = useContext(ModalContext)
+
   return (
     <OutsideClick onOutsideClick={() => modalDispatch({ type: 'close' })}>
       <FormDiv>

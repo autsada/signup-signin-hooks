@@ -67,6 +67,7 @@ const DivBar = styled.div`
 
 const Nav = () => {
   const { modalDispatch } = useContext(ModalContext)
+
   return (
     <Div>
       <DivBar>
