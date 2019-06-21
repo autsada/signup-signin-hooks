@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import styled from 'styled-components'
 
 import HomePage from './pages/HomePage'
@@ -16,7 +16,7 @@ const InnerDiv = styled.div`
 
 const Routes = () => {
   return (
-    <BrowserRouter>
+    <>
       <Nav />
       <Switch>
         <InnerDiv>
@@ -26,7 +26,7 @@ const Routes = () => {
           <Modal />
         </InnerDiv>
       </Switch>
-    </BrowserRouter>
+    </>
   )
 }
 

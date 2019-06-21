@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import { ModalProvider } from './hooks'
+import ContextProvider from './hooks/state'
 import Routes from './Routes'
 
 const Div = styled.div`
@@ -14,11 +14,11 @@ const Div = styled.div`
 
 const App = () => {
   return (
-    <ModalProvider>
+    <ContextProvider>
       <Div>
         <Routes />
       </Div>
-    </ModalProvider>
+    </ContextProvider>
   )
 }
 

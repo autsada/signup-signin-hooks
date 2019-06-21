@@ -12,12 +12,12 @@ const Div = styled.div`
   width: 60%;
 `
 
-const Modal = () => {
+const Modal = props => {
   const { modalState } = useContext(ModalContext)
   const { signupOpen, signinOpen } = modalState
 
   if (!signupOpen && !signinOpen) return null
-
+  console.log(props)
   return (
     <>
       <Backdrop />

@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import OutsideClick from 'react-outside-click-handler'
 
-import { ModalContext } from '../hooks'
+import { ModalContext, SignupContext } from '../hooks'
 
 const FormDiv = styled.div`
   position: relative;
@@ -61,13 +61,14 @@ const FormDiv = styled.div`
 
 const SignupForm = () => {
   const { modalDispatch } = useContext(ModalContext)
+  const { handleSubmit } = useContext(SignupContext)
 
   return (
     <OutsideClick onOutsideClick={() => modalDispatch({ type: 'close' })}>
       <FormDiv>
         <h1>Sign Up</h1>
         <FormDiv>
-          <form>
+          <form onSubmit={handleSubmit}>
             <input
               className='input'
               type='email'
@@ -89,7 +90,9 @@ const SignupForm = () => {
               placeholder='Confirm your Password'
               autoComplete='off'
             />
-            <button className='bttn'>Submit</button>
+            <button className='bttn' type='submit'>
+              Submit
+            </button>
           </form>
           <h3 onClick={() => modalDispatch({ type: 'close' })}>&times;</h3>
         </FormDiv>
