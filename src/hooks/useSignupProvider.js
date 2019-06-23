@@ -48,13 +48,7 @@ export const SignupProvider = ({ children }) => {
       (!errors.password || errors.password.length === 0) &&
       !errors.confirmPassword
 
-    if (!noErrors) {
-      const validationErrors = validation([
-        emailValidation,
-        passwordValidation
-      ])(values)
-      setErrors(validationErrors)
-    } else if (noErrors && !!values.email && !!values.password) {
+    if (noErrors) {
       setSubmitting(true)
       saveDataToBackend()
 
@@ -78,6 +72,12 @@ export const SignupProvider = ({ children }) => {
           alert(error)
         }
       }
+    } else {
+      const validationErrors = validation([
+        emailValidation,
+        passwordValidation
+      ])(values)
+      setErrors(validationErrors)
     }
   }
 
