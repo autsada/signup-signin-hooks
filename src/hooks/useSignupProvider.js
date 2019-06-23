@@ -26,16 +26,16 @@ export const SignupProvider = ({ children }) => {
   const { modalDispatch } = useContext(ModalContext)
   const { history } = useContext(RouteContext)
 
-  const getErrors = () =>
-    validation([emailValidation, passwordValidation])(values)
+  // useEffect(() => {
+  //   if (firstRender) {
+  //     return setFirstRender(false)
+  //   }
 
-  useEffect(() => {
-    if (firstRender) {
-      return setFirstRender(false)
-    }
-
-    setErrors(getErrors())
-  }, [values])
+  //   const validationError = validation([emailValidation, passwordValidation])(
+  //     values
+  //   )
+  //   setErrors(validationError)
+  // }, [values])
 
   const handleChange = e => {
     setValues({
