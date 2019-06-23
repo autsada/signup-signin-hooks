@@ -43,18 +43,19 @@ export const SignupProvider = ({ children }) => {
     e.preventDefault()
     if (!values.email || !values.password || !values.confirmPassword) return
 
-    const validationErrors = validation([emailValidation, passwordValidation])(
-      values
-    )
-    setErrors(validationErrors)
-    setSubmitting(true)
-
     const noErrors =
       !errors.email &&
       (!errors.password || errors.password.length === 0) &&
       !errors.confirmPassword
 
-    if (noErrors && !!values.email && !!values.password) {
+    if (!noErrors) {
+      const validationErrors = validation([
+        emailValidation,
+        passwordValidation
+      ])(values)
+      setErrors(validationErrors)
+    } else if (noErrors && !!values.email && !!values.password) {
+      setSubmitting(true)
       saveDataToBackend()
 
       async function saveDataToBackend() {
