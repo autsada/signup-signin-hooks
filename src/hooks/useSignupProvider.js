@@ -1,21 +1,117 @@
-import React, { createContext, useContext } from 'react'
+import React, { useState, createContext, useEffect, useContext } from 'react'
 
-import { RouteContext, ModalContext } from './index'
+import { ModalContext, RouteContext } from './index'
+import {
+  emailValidation,
+  passwordValidation,
+  validation,
+  saveUser
+} from '../utils'
 
 export const SignupContext = createContext()
 
+const initialValues = {
+  email: '',
+  password: '',
+  confirmPassword: ''
+}
+
 export const SignupProvider = ({ children }) => {
-  const { history } = useContext(RouteContext)
+  const [values, setValues] = useState(initialValues)
+  const [errors, setErrors] = useState({})
+  const [isSubmitting, setSubmitting] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [authentication, setAuthentication] = useState(false)
+  const [firstRender, setFirstRender] = useState(true)
   const { modalDispatch } = useContext(ModalContext)
+  const { history } = useContext(RouteContext)
+
+  const getErrors = () =>
+    validation([emailValidation, passwordValidation])(values)
+
+  useEffect(() => {
+    if (firstRender) {
+      return setFirstRender(false)
+    }
+
+    setErrors(getErrors())
+  }, [values])
+
+  const handleChange = e => {
+    setValues({
+      ...values,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleBlur = () => {
+    const validationErrors = validation([emailValidation, passwordValidation])(
+      values
+    )
+    setErrors(validationErrors)
+  }
 
   const handleSubmit = e => {
     e.preventDefault()
-    console.log('Form is submitted')
-    modalDispatch({ type: 'close' })
-    history.push('/success')
+    if (!values.email || !values.password || !values.confirmPassword) return
+
+    const validationErrors = validation([emailValidation, passwordValidation])(
+      values
+    )
+    setErrors(validationErrors)
+    setSubmitting(true)
+
+    const noErrors =
+      !errors.email &&
+      (!errors.password || errors.password.length === 0) &&
+      !errors.confirmPassword
+
+    if (noErrors && !!values.email && !!values.password) {
+      saveDataToBackend()
+
+      async function saveDataToBackend() {
+        setLoading(true)
+        try {
+          const newUser = await saveUser(values)
+
+          if (newUser) {
+            setAuthentication(newUser)
+            modalDispatch({ type: 'close' })
+            setValues(initialValues)
+            console.log(JSON.parse(localStorage.getItem('Users')))
+          }
+          setLoading(false)
+          setSubmitting(false)
+          history.push('/success')
+        } catch (error) {
+          setLoading(false)
+          setSubmitting(false)
+          alert(error)
+        }
+      }
+    }
   }
+
+  const signout = () => {
+    setAuthentication(false)
+    history.push('/')
+  }
+
   return (
-    <SignupContext.Provider value={{ handleSubmit }}>
+    <SignupContext.Provider
+      value={{
+        values,
+        setValues,
+        handleChange,
+        handleSubmit,
+        loading,
+        authentication,
+        signout,
+        errors,
+        isSubmitting,
+        handleBlur
+      }}
+    >
       {children}
     </SignupContext.Provider>
   )

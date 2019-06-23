@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { ModalContext } from '../hooks'
+import { ModalContext, SignupContext } from '../hooks'
 
 const Div = styled.div`
   width: 100%;
@@ -18,6 +18,10 @@ const Div = styled.div`
     margin: 0 3rem 0 auto;
     justify-content: space-between;
     align-items: center;
+
+    p {
+      margin-right: 1rem;
+    }
 
     button {
       height: 60%;
@@ -67,6 +71,7 @@ const DivBar = styled.div`
 
 const Nav = () => {
   const { modalDispatch } = useContext(ModalContext)
+  const { authentication, signout } = useContext(SignupContext)
 
   return (
     <Div>
@@ -81,12 +86,23 @@ const Nav = () => {
         </ul>
       </DivBar>
       <div className='bar'>
-        <button onClick={() => modalDispatch({ type: 'signup' })}>
-          Sign Up
-        </button>
-        <button onClick={() => modalDispatch({ type: 'signin' })}>
-          Sign In
-        </button>
+        {authentication && (
+          <>
+            <p>{authentication.email}</p>
+            <button onClick={signout}>Sign out</button>
+          </>
+        )}
+
+        {!authentication && (
+          <>
+            <button onClick={() => modalDispatch({ type: 'signup' })}>
+              Sign Up
+            </button>
+            <button onClick={() => modalDispatch({ type: 'signin' })}>
+              Sign In
+            </button>
+          </>
+        )}
       </div>
     </Div>
   )

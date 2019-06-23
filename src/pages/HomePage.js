@@ -1,7 +1,6 @@
 import React from 'react'
 
-const HomePage = props => {
-  console.log(props)
+const HomePage = () => {
   return <h1>Welcome to React Mall</h1>
 }
 

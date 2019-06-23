@@ -7,7 +7,7 @@ import { ModalContext, SignupContext } from '../hooks'
 const FormDiv = styled.div`
   position: relative;
   background: white;
-  width: 60%;
+  width: 80%;
   margin: 0 auto;
   padding: 1rem 0;
   border-radius: 4px;
@@ -31,6 +31,13 @@ const FormDiv = styled.div`
       &:focus {
         outline: none;
       }
+    }
+
+    .error {
+      color: red;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: flex-start;
     }
 
     .bttn {
@@ -61,7 +68,15 @@ const FormDiv = styled.div`
 
 const SignupForm = () => {
   const { modalDispatch } = useContext(ModalContext)
-  const { handleSubmit } = useContext(SignupContext)
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    errors,
+    loading,
+    isSubmitting,
+    handleBlur
+  } = useContext(SignupContext)
 
   return (
     <OutsideClick onOutsideClick={() => modalDispatch({ type: 'close' })}>
@@ -74,24 +89,65 @@ const SignupForm = () => {
               type='email'
               name='email'
               placeholder='Your email address'
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
               autoComplete='off'
             />
+
+            {errors.email && <div className='error'>{errors.email}</div>}
+
             <input
               className='input'
               type='password'
               name='password'
               placeholder='Choose a save Password'
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
               autoComplete='off'
             />
+
+            {errors &&
+              errors.password &&
+              errors.password.length > 0 &&
+              errors.password.map(error => (
+                <div className='error' key={error}>
+                  {error}
+                </div>
+              ))}
+
             <input
               className='input'
               type='password'
               name='confirmPassword'
               placeholder='Confirm your Password'
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
               autoComplete='off'
             />
-            <button className='bttn' type='submit'>
-              Submit
+            {errors.confirmPassword && (
+              <div className='error'>{errors.confirmPassword}</div>
+            )}
+            <button
+              className='bttn'
+              type='submit'
+              style={{
+                transform: loading && 'scale(1.1)',
+                transition: 'transform 0.3s',
+                cursor:
+                  isSubmitting ||
+                  loading ||
+                  !!errors.email ||
+                  ((errors.password && errors.password.length > 0) ||
+                    !values.confirmPassword ||
+                    errors.confirmPassword)
+                    ? 'not-allowed'
+                    : 'pointer'
+              }}
+            >
+              Submit{loading && 'ting...'}
             </button>
           </form>
           <h3 onClick={() => modalDispatch({ type: 'close' })}>&times;</h3>
