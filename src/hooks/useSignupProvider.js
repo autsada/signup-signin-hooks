@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useContext } from 'react'
+import React, { useState, createContext, useContext } from 'react'
 
 import { ModalContext, RouteContext } from './index'
 import {
@@ -22,20 +22,8 @@ export const SignupProvider = ({ children }) => {
   const [isSubmitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [authentication, setAuthentication] = useState(false)
-  const [firstRender, setFirstRender] = useState(true)
   const { modalDispatch } = useContext(ModalContext)
   const { history } = useContext(RouteContext)
-
-  // useEffect(() => {
-  //   if (firstRender) {
-  //     return setFirstRender(false)
-  //   }
-
-  //   const validationError = validation([emailValidation, passwordValidation])(
-  //     values
-  //   )
-  //   setErrors(validationError)
-  // }, [values])
 
   const handleChange = e => {
     setValues({
