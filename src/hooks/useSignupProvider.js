@@ -62,10 +62,9 @@ export const SignupProvider = ({ children }) => {
 
     if (noErrors) {
       setSubmitting(true)
+      setLoading(true)
       saveDataToBackend()
-
       async function saveDataToBackend() {
-        setLoading(true)
         try {
           const newUser = await saveUser(values)
 
