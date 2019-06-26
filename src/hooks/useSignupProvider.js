@@ -1,4 +1,11 @@
-import React, { useState, createContext, useContext, useEffect } from 'react'
+import React, {
+  useState,
+  createContext,
+  useContext,
+  useEffect,
+  useReducer
+} from 'react'
+import { useImmerReducer } from 'use-immer'
 
 import { ModalContext, RouteContext } from './index'
 import {
@@ -10,21 +17,51 @@ import {
 
 export const SignupContext = createContext()
 
-const initialValues = {
-  email: '',
-  password: '',
-  confirmPassword: ''
+const initialState = {
+  values: {
+    email: '',
+    password: '',
+    confirmPassword: ''
+  },
+  errors: {}
+}
+
+const signupReducer = (draft, action) => {
+  switch (action.type) {
+    case 'ENTER_DATA': {
+      draft.values[action.field] = action.value
+      return
+    }
+
+    case 'ERROR': {
+      draft.errors = action.errors
+      return
+    }
+
+    case 'CLEAR_DATA': {
+      draft.values = {
+        email: '',
+        password: '',
+        confirmPassword: ''
+      }
+      draft.errors = {}
+    }
+  }
 }
 
 export const SignupProvider = ({ children }) => {
-  const [values, setValues] = useState(initialValues)
-  const [errors, setErrors] = useState({})
+  const [signupState, signupDispatch] = useImmerReducer(
+    signupReducer,
+    initialState
+  )
   const [isSubmitting, setSubmitting] = useState(false)
   const [loading, setLoading] = useState(false)
   const [authentication, setAuthentication] = useState(false)
   const [firstRender, setFirstRender] = useState(true)
   const { modalDispatch } = useContext(ModalContext)
   const { history } = useContext(RouteContext)
+
+  const { values, errors } = signupState
 
   useEffect(() => {
     if (firstRender) {
@@ -34,13 +71,14 @@ export const SignupProvider = ({ children }) => {
     const validationErrors = validation([emailValidation, passwordValidation])(
       values
     )
-    setErrors(validationErrors)
-  }, [values])
+    signupDispatch({ type: 'ERROR', errors: validationErrors })
+  }, [values, values.email, values.password, values.confirmPassword])
 
   const handleChange = e => {
-    setValues({
-      ...values,
-      [e.target.name]: e.target.value
+    signupDispatch({
+      type: 'ENTER_DATA',
+      field: e.target.name,
+      value: e.target.value
     })
   }
 
@@ -48,7 +86,7 @@ export const SignupProvider = ({ children }) => {
     const validationErrors = validation([emailValidation, passwordValidation])(
       values
     )
-    setErrors(validationErrors)
+    signupDispatch({ type: 'ERROR', errors: validationErrors })
   }
 
   const handleSubmit = e => {
@@ -71,7 +109,7 @@ export const SignupProvider = ({ children }) => {
           if (newUser) {
             setAuthentication(newUser)
             modalDispatch({ type: 'close' })
-            setValues(initialValues)
+            signupDispatch({ type: 'CLEAR_DATA' })
             console.log(JSON.parse(localStorage.getItem('Users')))
           }
           setLoading(false)
@@ -88,7 +126,7 @@ export const SignupProvider = ({ children }) => {
         emailValidation,
         passwordValidation
       ])(values)
-      setErrors(validationErrors)
+      signupDispatch({ type: 'ERROR', errors: validationErrors })
     }
   }
 
@@ -101,7 +139,6 @@ export const SignupProvider = ({ children }) => {
     <SignupContext.Provider
       value={{
         values,
-        setValues,
         handleChange,
         handleSubmit,
         loading,
